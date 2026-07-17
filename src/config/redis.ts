@@ -6,8 +6,13 @@ let redis: Redis | null = null;
 export function getRedis(): Redis {
   if (!redis) {
     redis = new Redis(env.REDIS_URL, {
-      maxRetriesPerRequest: 3,
+      maxRetriesPerRequest: 1,
       lazyConnect: true,
+      enableOfflineQueue: false,
+      retryStrategy: () => null,
+    });
+    redis.on('error', () => {
+      // Swallow connection errors when Redis is optional in local dev
     });
   }
   return redis;

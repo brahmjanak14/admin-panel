@@ -3,14 +3,14 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import pinoHttp from 'pino-http';
+import path from 'path';
 import { env } from './config/env';
+import { checkDatabase } from './config/database';
+import { pingRedis } from './config/redis';
 import { requestId } from './shared/middleware/requestId';
 import { errorHandler } from './shared/middleware/errorHandler';
 import { notFoundHandler } from './shared/middleware/notFoundHandler';
-import path from 'path';
 import routes from './routes';
-import { prisma } from './config/database';
-import { pingRedis } from './config/redis';
 
 export function createApp() {
   const app = express();
@@ -30,15 +30,8 @@ export function createApp() {
   app.use('/uploads', express.static(path.resolve(env.UPLOAD_DIR)));
 
   app.get(`${env.API_PREFIX}/health`, async (_req, res) => {
-    let db = 'disconnected';
-    let redis = 'disconnected';
-    try {
-      await prisma.$queryRaw`SELECT 1`;
-      db = 'connected';
-    } catch {
-      // keep disconnected
-    }
-    if (await pingRedis()) redis = 'connected';
+    const db = (await checkDatabase()) ? 'connected' : 'disconnected';
+    const redis = (await pingRedis()) ? 'connected' : 'disconnected';
     res.json({ status: 'ok', db, redis });
   });
 

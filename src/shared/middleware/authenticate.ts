@@ -2,8 +2,8 @@ import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { env } from '../../config/env';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
-import type { JwtPayload, User } from '../../modules/auth/auth.types';
-import { authRepository } from '../../modules/auth/auth.repository';
+import type { JwtPayload, User } from '../../modules/auth/schema/auth.schema';
+import { authModel } from '../../modules/auth/model/auth.model';
 
 declare global {
   namespace Express {
@@ -24,7 +24,7 @@ export async function authenticate(req: Request, _res: Response, next: NextFunct
     const token = header.slice(7);
     const decoded = jwt.verify(token, env.JWT_ACCESS_SECRET) as JwtPayload;
 
-    const user = await authRepository.findUserById(decoded.sub);
+    const user = await authModel.findUserById(decoded.sub);
     if (!user || !user.isActive) {
       throw new UnauthorizedError('User not found or inactive');
     }

@@ -1,4 +1,4 @@
-import type { Lead } from '../../../../modules/leads/leads.types';
+import type { Lead } from '../../../../modules/leads/schema/leads.schema';
 import type { ContactSheetRow } from '../types';
 
 function meta(lead: Lead, key: string): string {

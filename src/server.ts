@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import { createApp } from './app';
 import { env } from './config/env';
+import { checkDatabase } from './config/database';
 import { connectRedis } from './config/redis';
-import { prisma } from './config/database';
 
 async function bootstrap() {
   try {
@@ -11,7 +11,11 @@ async function bootstrap() {
     console.warn('Redis unavailable — caching and rate limiting may degrade:', err);
   }
 
-  await prisma.$connect();
+  if (!(await checkDatabase())) {
+    throw new Error(
+      'Database connection failed. Check DATABASE_URL in .env (user/password/db) and that PostgreSQL is running.',
+    );
+  }
 
   const app = createApp();
   app.listen(env.PORT, () => {

@@ -1,4 +1,4 @@
-import type { Permission, Role } from '../modules/auth/auth.types';
+import type { Permission, Role } from '../modules/auth/schema/auth.schema';
 
 export const ALL_PERMISSIONS: Permission[] = [
   'leads:read',

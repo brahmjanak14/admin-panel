@@ -1,4 +1,4 @@
-import type { Lead } from '../../../modules/leads/leads.types';
+import type { Lead } from '../../../modules/leads/schema/leads.schema';
 
 export type SheetDefinition = {
   /** Lead type this sheet handles, e.g. "contact" | "consultation" */

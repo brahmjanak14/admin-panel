@@ -5,7 +5,7 @@ Production-ready REST API backend for the Shyaam International visa consultancy 
 ## Stack
 
 - Node.js 20+, Express 5, TypeScript
-- PostgreSQL + Prisma ORM
+- PostgreSQL + Drizzle ORM
 - Redis (caching + rate limiting)
 - JWT auth with refresh tokens + RBAC
 
@@ -34,7 +34,7 @@ Edit `.env` if needed (defaults work with docker-compose).
 ### 4. Run migrations & seed
 
 ```bash
-npx prisma migrate dev --name init
+npm run push
 npm run seed
 ```
 
@@ -74,9 +74,9 @@ Default admin credentials (from seed):
 | Services | Full CRUD on `/admin/services` (slug-based) |
 | Blogs | Full CRUD on `/admin/blogs` (slug-based) |
 
-## Phase 2 endpoints (scaffolded)
+## Phase 2 endpoints
 
-Universities, Events, Testimonials, FAQs, Careers, Media, Users, Settings — basic CRUD structure in place.
+Universities, Events, Testimonials, FAQs, Careers, Media, Users, Settings — full CRUD.
 
 ## Scripts
 
@@ -85,7 +85,9 @@ Universities, Events, Testimonials, FAQs, Careers, Media, Users, Settings — ba
 | `npm run dev` | Start with hot reload |
 | `npm run build` | Compile TypeScript |
 | `npm start` | Run production build |
-| `npm run migrate` | Prisma migrate dev |
+| `npm run push` | Push Drizzle schema to DB |
+| `npm run generate` | Generate Drizzle migrations |
+| `npm run migrate` | Apply Drizzle migrations |
 | `npm run seed` | Seed database |
 | `npm run lint` | Type check |
 
@@ -110,7 +112,7 @@ Errors:
 ## Architecture
 
 ```
-routes → controllers → services → repositories → Prisma → PostgreSQL
+routes → controllers → services → models → Drizzle → PostgreSQL
 ```
 
 Redis cache-aside on dashboard stats and content reads. Rate limits on auth, public leads, and admin routes.

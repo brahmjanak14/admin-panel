@@ -1,4 +1,4 @@
-import type { Lead } from '../../../../modules/leads/leads.types';
+import type { Lead } from '../../../../modules/leads/schema/leads.schema';
 import type { SheetDefinition } from '../types';
 import { contactSheet } from './contact.sheet';
 import { consultationSheet } from './consultation.sheet';

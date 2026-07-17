@@ -1,4 +1,4 @@
-import type { Lead } from '../../../modules/leads/leads.types';
+import type { Lead } from '../../../modules/leads/schema/leads.schema';
 import type { LeadIntegration } from './types';
 
 const integrations: LeadIntegration[] = [];

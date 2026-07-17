@@ -1,7 +1,5 @@
-import type { Prisma } from '@prisma/client';
-
-export function toJsonValue<T>(value: T): Prisma.InputJsonValue {
-  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
+export function toJsonValue<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
 }
 
 export function paramString(value: string | string[]): string {
